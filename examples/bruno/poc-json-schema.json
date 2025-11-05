@@ -1,0 +1,326 @@
+{
+  "name": "poc-json-schema",
+  "version": "1",
+  "items": [
+    {
+      "type": "http",
+      "name": "create schema",
+      "filename": "create schema.bru",
+      "seq": 2,
+      "settings": {
+        "encodeUrl": false
+      },
+      "tags": [],
+      "request": {
+        "url": "http://localhost:8080/api/schemas",
+        "method": "POST",
+        "headers": [
+          {
+            "name": "Content-Type",
+            "value": "application/json",
+            "enabled": true
+          }
+        ],
+        "params": [],
+        "body": {
+          "mode": "json",
+          "json": "{\"type\":\"user\",\"version\":\"1.0\",\"schemaContent\":\"{\\\"$schema\\\":\\\"http://json-schema.org/draft-07/schema#\\\",\\\"type\\\":\\\"object\\\",\\\"properties\\\":{\\\"name\\\":{\\\"type\\\":\\\"string\\\"},\\\"age\\\":{\\\"type\\\":\\\"integer\\\",\\\"minimum\\\":0},\\\"email\\\":{\\\"type\\\":\\\"string\\\",\\\"format\\\":\\\"email\\\"}},\\\"required\\\":[\\\"name\\\",\\\"email\\\"]}\"}",
+          "formUrlEncoded": [],
+          "multipartForm": [],
+          "file": []
+        },
+        "script": {},
+        "vars": {},
+        "assertions": [],
+        "tests": "",
+        "docs": "",
+        "auth": {
+          "mode": "inherit"
+        }
+      }
+    },
+    {
+      "type": "http",
+      "name": "validate valid request",
+      "filename": "validate valid request.bru",
+      "seq": 3,
+      "settings": {
+        "encodeUrl": false
+      },
+      "tags": [],
+      "request": {
+        "url": "http://localhost:8080/api/validate",
+        "method": "POST",
+        "headers": [
+          {
+            "name": "Content-Type",
+            "value": "application/json",
+            "enabled": true
+          }
+        ],
+        "params": [],
+        "body": {
+          "mode": "json",
+          "json": "{\n    \"type\": \"user\",\n    \"version\": \"1.0\",\n    \"jsonData\": \"{\\\"name\\\":\\\"John Doe\\\",\\\"age\\\":30,\\\"email\\\":\\\"john@example.com\\\"}\"\n  }",
+          "formUrlEncoded": [],
+          "multipartForm": [],
+          "file": []
+        },
+        "script": {},
+        "vars": {},
+        "assertions": [],
+        "tests": "",
+        "docs": "",
+        "auth": {
+          "mode": "inherit"
+        }
+      }
+    },
+    {
+      "type": "http",
+      "name": "validate invalid request",
+      "filename": "validate invalid request.bru",
+      "seq": 5,
+      "settings": {
+        "encodeUrl": false
+      },
+      "tags": [],
+      "request": {
+        "url": "http://localhost:8080/api/validate",
+        "method": "POST",
+        "headers": [
+          {
+            "name": "Content-Type",
+            "value": "application/json",
+            "enabled": true
+          }
+        ],
+        "params": [],
+        "body": {
+          "mode": "json",
+          "json": "{\n    \"type\": \"user\",\n    \"version\": \"1.0\",\n    \"jsonData\": \"{\\\"name\\\":\\\"John Doe\\\",\\\"age\\\":30}\"\n  }",
+          "formUrlEncoded": [],
+          "multipartForm": [],
+          "file": []
+        },
+        "script": {},
+        "vars": {},
+        "assertions": [],
+        "tests": "",
+        "docs": "",
+        "auth": {
+          "mode": "inherit"
+        }
+      }
+    },
+    {
+      "type": "http",
+      "name": "validate invalid age",
+      "filename": "validate invalid age.bru",
+      "seq": 4,
+      "settings": {
+        "encodeUrl": false
+      },
+      "tags": [],
+      "request": {
+        "url": "http://localhost:8080/api/validate",
+        "method": "POST",
+        "headers": [
+          {
+            "name": "Content-Type",
+            "value": "application/json",
+            "enabled": true
+          }
+        ],
+        "params": [],
+        "body": {
+          "mode": "json",
+          "json": "{\n    \"type\": \"user\",\n    \"version\": \"1.0\",\n    \"jsonData\": \"{\\\"name\\\":\\\"John Doe\\\",\\\"age\\\":-2.0,\\\"email\\\":\\\"john@example.com\\\"}\"\n  }",
+          "formUrlEncoded": [],
+          "multipartForm": [],
+          "file": []
+        },
+        "script": {},
+        "vars": {},
+        "assertions": [],
+        "tests": "",
+        "docs": "",
+        "auth": {
+          "mode": "inherit"
+        }
+      }
+    },
+    {
+      "type": "http",
+      "name": "generate pojo",
+      "filename": "generate pojo.bru",
+      "seq": 6,
+      "settings": {
+        "encodeUrl": false
+      },
+      "tags": [],
+      "request": {
+        "url": "http://localhost:8080/api/generate-jar?type=user&version=1.0",
+        "method": "GET",
+        "headers": [],
+        "params": [
+          {
+            "name": "type",
+            "value": "user",
+            "type": "query",
+            "enabled": true
+          },
+          {
+            "name": "version",
+            "value": "1.0",
+            "type": "query",
+            "enabled": true
+          }
+        ],
+        "body": {
+          "mode": "none",
+          "formUrlEncoded": [],
+          "multipartForm": [],
+          "file": []
+        },
+        "script": {},
+        "vars": {},
+        "assertions": [],
+        "tests": "",
+        "docs": "",
+        "auth": {
+          "mode": "inherit"
+        }
+      }
+    },
+    {
+      "type": "http",
+      "name": "create schema complex",
+      "filename": "create schema complex.bru",
+      "seq": 7,
+      "settings": {
+        "encodeUrl": false
+      },
+      "tags": [],
+      "request": {
+        "url": "http://localhost:8080/api/schemas",
+        "method": "POST",
+        "headers": [
+          {
+            "name": "Content-Type",
+            "value": "application/json",
+            "enabled": true
+          }
+        ],
+        "params": [],
+        "body": {
+          "mode": "json",
+          "json": "{\"type\":\"user\",\"version\":\"1.0\",\"schemaContent\":\"{\\\"$schema\\\":\\\"http://json-schema.org/draft-07/schema#\\\",\\\"type\\\":\\\"object\\\",\\\"properties\\\":{\\\"name\\\":{\\\"type\\\":\\\"string\\\"},\\\"age\\\":{\\\"type\\\":\\\"integer\\\",\\\"minimum\\\":0},\\\"email\\\":{\\\"type\\\":\\\"string\\\",\\\"format\\\":\\\"email\\\"}},\\\"required\\\":[\\\"name\\\",\\\"email\\\"]}\"}",
+          "formUrlEncoded": [],
+          "multipartForm": [],
+          "file": []
+        },
+        "script": {},
+        "vars": {},
+        "assertions": [],
+        "tests": "",
+        "docs": "",
+        "auth": {
+          "mode": "inherit"
+        }
+      }
+    },
+    {
+      "type": "http",
+      "name": "validate valid request complex",
+      "filename": "validate valid request complex.bru",
+      "seq": 8,
+      "settings": {
+        "encodeUrl": false
+      },
+      "tags": [],
+      "request": {
+        "url": "http://localhost:8080/api/validate",
+        "method": "POST",
+        "headers": [
+          {
+            "name": "Content-Type",
+            "value": "application/json",
+            "enabled": true
+          }
+        ],
+        "params": [],
+        "body": {
+          "mode": "json",
+          "json": "{\n  \"type\": \"person\",\n  \"version\": \"2.0\",\n  \"jsonData\": \"{\\\"id\\\":1,\\\"name\\\":\\\"Jane Smith\\\",\\\"email\\\":\\\"jane@example.com\\\",\\\"address\\\":{\\\"street\\\":\\\"456 Oak Ave\\\",\\\"city\\\":\\\"San Francisco\\\",\\\"state\\\":\\\"CA\\\",\\\"zipCode\\\":\\\"94102\\\",\\\"coordinates\\\":{\\\"latitude\\\":37.7749,\\\"longitude\\\":-122.4194}},\\\"phoneNumbers\\\":[{\\\"type\\\":\\\"mobile\\\",\\\"number\\\":\\\"555-123-4567\\\"},{\\\"type\\\":\\\"work\\\",\\\"number\\\":\\\"555-987-6543\\\"}],\\\"employment\\\":{\\\"company\\\":\\\"Tech Corp\\\",\\\"position\\\":\\\"Software Engineer\\\",\\\"salary\\\":120000,\\\"benefits\\\":{\\\"healthInsurance\\\":true,\\\"retirement401k\\\":true}}}\"\n}\n",
+          "formUrlEncoded": [],
+          "multipartForm": [],
+          "file": []
+        },
+        "script": {},
+        "vars": {},
+        "assertions": [],
+        "tests": "",
+        "docs": "",
+        "auth": {
+          "mode": "inherit"
+        }
+      }
+    },
+    {
+      "type": "http",
+      "name": "generate pojo person",
+      "filename": "generate pojo person.bru",
+      "seq": 9,
+      "settings": {
+        "encodeUrl": false
+      },
+      "tags": [],
+      "request": {
+        "url": "http://localhost:8080/api/generate-jar?type=user&version=1.0",
+        "method": "GET",
+        "headers": [],
+        "params": [
+          {
+            "name": "type",
+            "value": "user",
+            "type": "query",
+            "enabled": true
+          },
+          {
+            "name": "version",
+            "value": "1.0",
+            "type": "query",
+            "enabled": true
+          }
+        ],
+        "body": {
+          "mode": "none",
+          "formUrlEncoded": [],
+          "multipartForm": [],
+          "file": []
+        },
+        "script": {},
+        "vars": {},
+        "assertions": [],
+        "tests": "",
+        "docs": "",
+        "auth": {
+          "mode": "inherit"
+        }
+      }
+    }
+  ],
+  "environments": [],
+  "brunoConfig": {
+    "version": "1",
+    "name": "poc-json-schema",
+    "type": "collection",
+    "ignore": [
+      "node_modules",
+      ".git"
+    ],
+    "size": 0,
+    "filesCount": 0
+  }
+}
