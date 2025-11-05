@@ -1,0 +1,7 @@
+{
+  "name": "Jane Smith",
+  "age": -5,
+  "phoneNumbers": [
+    "invalid-phone"
+  ]
+}

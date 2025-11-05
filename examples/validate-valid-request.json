@@ -1,0 +1,5 @@
+{
+  "type": "user",
+  "version": "1.0",
+  "jsonData": "{\"name\":\"John Doe\",\"age\":30,\"email\":\"john@example.com\"}"
+}

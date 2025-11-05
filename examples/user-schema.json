@@ -1,0 +1,51 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "User",
+  "description": "A user in the system",
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "integer",
+      "description": "The unique identifier for a user"
+    },
+    "name": {
+      "type": "string",
+      "description": "The user's full name"
+    },
+    "age": {
+      "type": "integer",
+      "description": "The user's age",
+      "minimum": 0,
+      "maximum": 150
+    },
+    "email": {
+      "type": "string",
+      "description": "The user's email address",
+      "format": "email"
+    },
+    "address": {
+      "type": "object",
+      "properties": {
+        "street": {
+          "type": "string"
+        },
+        "city": {
+          "type": "string"
+        },
+        "zipCode": {
+          "type": "string",
+          "pattern": "^\\d{5}(-\\d{4})?$"
+        }
+      },
+      "required": ["street", "city"]
+    },
+    "phoneNumbers": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^\\d{3}-\\d{3}-\\d{4}$"
+      }
+    }
+  },
+  "required": ["name", "email"]
+}

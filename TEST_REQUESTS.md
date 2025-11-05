@@ -1,0 +1,123 @@
+# Test Requests for JSON Schema Validation POC
+
+## 1. Save a User Schema
+
+**Using file (RECOMMENDED - no escaping issues):**
+```bash
+curl -X POST http://localhost:8080/api/schemas \
+  -H "Content-Type: application/json" \
+  -d @examples/save-user-schema-request.json
+```
+
+**Or inline (note the escaping):**
+```bash
+curl -X POST http://localhost:8080/api/schemas \
+  -H "Content-Type: application/json" \
+  -d '{"type":"user","version":"1.0","schemaContent":"{\"$schema\":\"http://json-schema.org/draft-07/schema#\",\"type\":\"object\",\"properties\":{\"name\":{\"type\":\"string\"},\"age\":{\"type\":\"integer\",\"minimum\":0},\"email\":{\"type\":\"string\",\"format\":\"email\"}},\"required\":[\"name\",\"email\"]}"}'
+```
+
+## 2. Validate Valid User JSON
+
+**Using file (RECOMMENDED):**
+```bash
+curl -X POST http://localhost:8080/api/validate \
+  -H "Content-Type: application/json" \
+  -d @examples/validate-valid-request.json
+```
+
+**Or inline:**
+```bash
+curl -X POST http://localhost:8080/api/validate \
+  -H "Content-Type: application/json" \
+  -d '{"type":"user","version":"1.0","jsonData":"{\"name\":\"John Doe\",\"age\":30,\"email\":\"john@example.com\"}"}'
+```
+
+Expected Response:
+```json
+{
+  "valid": true,
+  "errors": []
+}
+```
+
+## 3. Validate Invalid User JSON (missing required email)
+
+**Using file (RECOMMENDED):**
+```bash
+curl -X POST http://localhost:8080/api/validate \
+  -H "Content-Type: application/json" \
+  -d @examples/validate-invalid-request.json
+```
+
+**Or inline:**
+```bash
+curl -X POST http://localhost:8080/api/validate \
+  -H "Content-Type: application/json" \
+  -d '{"type":"user","version":"1.0","jsonData":"{\"name\":\"John Doe\",\"age\":30}"}'
+```
+
+Expected Response:
+```json
+{
+  "valid": false,
+  "errors": [
+    "$: required property 'email' not found"
+  ]
+}
+```
+
+## 4. Validate Invalid User JSON (invalid age)
+
+```bash
+curl -X POST http://localhost:8080/api/validate \
+  -H "Content-Type: application/json" \
+  -d '{"type":"user","version":"1.0","jsonData":"{\"name\":\"John Doe\",\"age\":-5,\"email\":\"john@example.com\"}"}'
+```
+
+Expected Response:
+```json
+{
+  "valid": false,
+  "errors": ["$.age: must have a minimum value of 0"]
+}
+```
+
+## 5. Generate POJO JAR
+
+```bash
+curl -X GET "http://localhost:8080/api/generate-jar?type=user&version=1.0" \
+  -o user-1.0-pojos.jar
+```
+
+## Additional Test: Product Schema
+
+### Save Product Schema
+
+```bash
+curl -X POST http://localhost:8080/api/schemas \
+  -H "Content-Type: application/json" \
+  -d '{
+    "type": "product",
+    "version": "1.0",
+    "schemaContent": "{\"$schema\":\"http://json-schema.org/draft-07/schema#\",\"type\":\"object\",\"properties\":{\"id\":{\"type\":\"integer\"},\"name\":{\"type\":\"string\"},\"price\":{\"type\":\"number\",\"minimum\":0},\"category\":{\"type\":\"string\",\"enum\":[\"electronics\",\"clothing\",\"food\"]}},\"required\":[\"id\",\"name\",\"price\"]}"
+  }'
+```
+
+### Validate Product JSON
+
+```bash
+curl -X POST http://localhost:8080/api/validate \
+  -H "Content-Type: application/json" \
+  -d '{
+    "type": "product",
+    "version": "1.0",
+    "jsonData": "{\"id\":1,\"name\":\"Laptop\",\"price\":999.99,\"category\":\"electronics\"}"
+  }'
+```
+
+### Generate Product POJO JAR
+
+```bash
+curl -X GET "http://localhost:8080/api/generate-jar?type=product&version=1.0" \
+  -o product-1.0-pojos.jar
+```
