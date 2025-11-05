@@ -121,3 +121,48 @@ curl -X POST http://localhost:8080/api/validate \
 curl -X GET "http://localhost:8080/api/generate-jar?type=product&version=1.0" \
   -o product-1.0-pojos.jar
 ```
+
+## Testing Nested Classes
+
+### Save Person Schema with Nested Objects
+
+This schema demonstrates **nested classes** including:
+- `Address` object with nested `Coordinates` object
+- Array of `PhoneNumber` objects
+- `Employment` object with nested `Benefits` object
+
+```bash
+curl -X POST http://localhost:8080/api/schemas \
+  -H "Content-Type: application/json" \
+  -d @examples/save-nested-person-request.json
+```
+
+### Validate Nested Person JSON
+
+```bash
+curl -X POST http://localhost:8080/api/validate \
+  -H "Content-Type: application/json" \
+  -d @examples/validate-nested-person-request.json
+```
+
+### Generate POJO JAR with Nested Classes
+
+```bash
+curl -X GET "http://localhost:8080/api/generate-jar?type=person&version=2.0" \
+  -o person-2.0-pojos.jar
+```
+
+**This will generate multiple Java classes:**
+- `Person.java` - Main class
+- `Address.java` - Nested class for address
+- `Coordinates.java` - Nested class for coordinates (inside Address)
+- `PhoneNumber.java` - Class for phone number items in array
+- `Employment.java` - Nested class for employment
+- `Benefits.java` - Nested class for benefits (inside Employment)
+
+All classes will include:
+- Jackson annotations for JSON serialization/deserialization
+- Getters and setters
+- Builder pattern support
+- hashCode() and equals() methods
+- toString() method

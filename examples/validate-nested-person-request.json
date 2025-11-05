@@ -1,0 +1,5 @@
+{
+  "type": "person",
+  "version": "2.0",
+  "jsonData": "{\"id\":1,\"name\":\"Jane Smith\",\"email\":\"jane@example.com\",\"address\":{\"street\":\"456 Oak Ave\",\"city\":\"San Francisco\",\"state\":\"CA\",\"zipCode\":\"94102\",\"coordinates\":{\"latitude\":37.7749,\"longitude\":-122.4194}},\"phoneNumbers\":[{\"type\":\"mobile\",\"number\":\"555-123-4567\"},{\"type\":\"work\",\"number\":\"555-987-6543\"}],\"employment\":{\"company\":\"Tech Corp\",\"position\":\"Software Engineer\",\"salary\":120000,\"benefits\":{\"healthInsurance\":true,\"retirement401k\":true}}}"
+}

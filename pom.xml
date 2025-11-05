@@ -45,27 +45,23 @@
             <scope>runtime</scope>
         </dependency>
         
-        <!-- JSON Schema Validator -->
         <dependency>
             <groupId>com.networknt</groupId>
             <artifactId>json-schema-validator</artifactId>
             <version>1.5.3</version>
         </dependency>
         
-        <!-- JsonSchema2Pojo for POJO generation -->
         <dependency>
             <groupId>org.jsonschema2pojo</groupId>
             <artifactId>jsonschema2pojo-core</artifactId>
             <version>1.2.1</version>
         </dependency>
-        
-        <!-- Jackson for JSON processing -->
+
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-databind</artifactId>
         </dependency>
         
-        <!-- Lombok for reducing boilerplate -->
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
