@@ -30,6 +30,7 @@ public class JsonSchemaService {
     
     private final JsonSchemaRepository repository;
     private final ObjectMapper objectMapper;
+    private final AvroConverterService avroConverterService;
     
     public JsonSchemaEntity saveSchema(SchemaRequest request) {
         // Validate that the schema is valid JSON
@@ -199,5 +200,18 @@ public class JsonSchemaService {
             return str;
         }
         return str.substring(0, 1).toUpperCase() + str.substring(1);
+    }
+    
+    public String getAvroSchema(String type, String version) {
+        // Find the schema
+        JsonSchemaEntity schemaEntity = repository.findByTypeAndVersion(type, version)
+            .orElseThrow(() -> new IllegalArgumentException(
+                "Schema not found for type '" + type + "' and version '" + version + "'"));
+        
+        // Convert to Avro
+        return avroConverterService.convertJsonSchemaToAvro(
+            schemaEntity.getSchemaContent(), 
+            type
+        );
     }
 }

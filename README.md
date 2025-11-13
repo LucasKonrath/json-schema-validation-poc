@@ -7,6 +7,7 @@ This is a proof of concept application that provides REST endpoints for managing
 1. **Save JSON Schema**: Store JSON schemas in H2 database with type and version
 2. **Validate JSON**: Validate JSON data against stored schemas
 3. **Generate POJOs**: Generate and download JAR files containing Java POJOs based on schemas
+4. **Avro Conversion**: Convert and retrieve JSON schemas in Apache Avro format
 
 ## Prerequisites
 
@@ -154,6 +155,33 @@ http://localhost:8080/api/generate-jar?type=user&version=1.0
 
 This will download a JAR file containing the generated POJO classes based on the schema.
 
+### 4. Get Avro Schema
+
+**GET** `/api/schemas/{type}/{version}/avro`
+
+Convert and retrieve a stored JSON schema in Apache Avro format.
+
+**Example using curl:**
+```bash
+curl -X GET "http://localhost:8080/api/schemas/user/1.0/avro"
+```
+
+**Response:**
+```json
+{
+  "type": "user",
+  "version": "1.0",
+  "avroSchema": "{\n  \"type\" : \"record\",\n  \"name\" : \"User\",\n  \"namespace\" : \"org.example.generated\",\n  \"fields\" : [ {\n    \"name\" : \"name\",\n    \"type\" : \"string\"\n  }, {\n    \"name\" : \"age\",\n    \"type\" : [ \"null\", \"int\" ],\n    \"default\" : null\n  }, {\n    \"name\" : \"email\",\n    \"type\" : \"string\"\n  } ]\n}"
+}
+```
+
+**Features:**
+- Converts JSON Schema types to Avro types
+- Handles nested objects as Avro records
+- Supports arrays and enums
+- Maps required/optional fields to Avro unions with null
+- Preserves schema structure and relationships
+
 ## Example Workflow
 
 1. **Start the application**
@@ -200,6 +228,11 @@ This will download a JAR file containing the generated POJO classes based on the
      -o product-1.0-pojos.jar
    ```
 
+6. **Get Avro Schema**
+   ```bash
+   curl -X GET "http://localhost:8080/api/schemas/product/1.0/avro"
+   ```
+
 ## Technologies Used
 
 - **Spring Boot 3.5.7** - Main framework
@@ -207,6 +240,7 @@ This will download a JAR file containing the generated POJO classes based on the
 - **H2 Database** - In-memory database
 - **NetworkNT JSON Schema Validator** - JSON schema validation
 - **jsonschema2pojo** - POJO generation from JSON schemas
+- **Apache Avro** - Avro schema conversion
 - **Lombok** - Reduce boilerplate code
 
 ## Notes
@@ -215,3 +249,6 @@ This will download a JAR file containing the generated POJO classes based on the
 - Schema type and version combinations must be unique
 - The POJO generation creates Java source files packaged in a JAR
 - Generated POJOs include Jackson annotations for JSON serialization/deserialization
+- Avro conversion supports nested objects, arrays, enums, and proper type mappings
+- Required fields in JSON Schema are mapped as non-nullable in Avro
+- Optional fields use Avro unions with null type

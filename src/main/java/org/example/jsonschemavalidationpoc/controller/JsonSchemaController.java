@@ -1,6 +1,7 @@
 package org.example.jsonschemavalidationpoc.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.example.jsonschemavalidationpoc.dto.AvroSchemaResponse;
 import org.example.jsonschemavalidationpoc.dto.SchemaRequest;
 import org.example.jsonschemavalidationpoc.dto.ValidationRequest;
 import org.example.jsonschemavalidationpoc.dto.ValidationResponse;
@@ -66,6 +67,22 @@ public class JsonSchemaController {
             return ResponseEntity.badRequest().build();
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+    
+    @GetMapping("/schemas/{type}/{version}/avro")
+    public ResponseEntity<?> getAvroSchema(
+            @PathVariable String type,
+            @PathVariable String version) {
+        try {
+            String avroSchema = jsonSchemaService.getAvroSchema(type, version);
+            AvroSchemaResponse response = new AvroSchemaResponse(type, version, avroSchema);
+            return ResponseEntity.ok(response);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .body("Error converting to Avro: " + e.getMessage());
         }
     }
 }

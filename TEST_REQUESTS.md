@@ -89,6 +89,23 @@ curl -X GET "http://localhost:8080/api/generate-jar?type=user&version=1.0" \
   -o user-1.0-pojos.jar
 ```
 
+## 6. Get Avro Schema
+
+**Convert and retrieve the JSON Schema in Avro format:**
+
+```bash
+curl -X GET "http://localhost:8080/api/schemas/user/1.0/avro"
+```
+
+**Expected Response:**
+```json
+{
+  "type": "user",
+  "version": "1.0",
+  "avroSchema": "{\n  \"type\" : \"record\",\n  \"name\" : \"User\",\n  \"namespace\" : \"org.example.generated\",\n  \"fields\" : [ {\n    \"name\" : \"name\",\n    \"type\" : \"string\"\n  }, {\n    \"name\" : \"age\",\n    \"type\" : [ \"null\", \"int\" ],\n    \"default\" : null\n  }, {\n    \"name\" : \"email\",\n    \"type\" : \"string\"\n  } ]\n}"
+}
+```
+
 ## Additional Test: Product Schema
 
 ### Save Product Schema
@@ -151,6 +168,18 @@ curl -X POST http://localhost:8080/api/validate \
 curl -X GET "http://localhost:8080/api/generate-jar?type=person&version=2.0" \
   -o person-2.0-pojos.jar
 ```
+
+### Get Avro Schema for Nested Person
+
+```bash
+curl -X GET "http://localhost:8080/api/schemas/person/2.0/avro"
+```
+
+**This will return the nested Avro schema with:**
+- Nested record types for Address, Coordinates, Employment, Benefits
+- Array of PhoneNumber records
+- Proper field mappings and nullability
+
 
 **This will generate multiple Java classes:**
 - `Person.java` - Main class
